@@ -1,0 +1,2032 @@
+diff --git a/pages/AnswersHome.page b/pages/AnswersHome.page
+new file mode 100644
+index 0000000..a305b75
+--- /dev/null
++++ b/pages/AnswersHome.page
+@@ -0,0 +1 @@
++<apex:page action="{!URLFOR('/answers/answersHome.apexp')}"/>
+\ No newline at end of file
+diff --git a/pages/AnswersHome.page-meta.xml b/pages/AnswersHome.page-meta.xml
+new file mode 100644
+index 0000000..6912303
+--- /dev/null
++++ b/pages/AnswersHome.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Lightning Platform home page for Answers sites</description>
++    <label>AnswersHome</label>
++</ApexPage>
+diff --git a/pages/BandwidthExceeded.page b/pages/BandwidthExceeded.page
+new file mode 100644
+index 0000000..01207e0
+--- /dev/null
++++ b/pages/BandwidthExceeded.page
+@@ -0,0 +1,17 @@
++<apex:page showHeader="false" title="{!$Label.site.bandwidth_limit_exceeded}">
++  <apex:composition template="StdExceptionTemplate">
++    <apex:define name="icon">
++      <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/warning.png')}"/>
++    </apex:define>
++    <apex:define name="error">
++      <apex:outputText styleClass="title" value="{!$Label.site.limit_exceeded}"/>
++      <br/>
++      <br/>
++      <apex:outputText value="{!$Label.site.sorry_for_inconvenience}"/>
++      <apex:outputText escape="false" value=" {!$Label.site.get_in_touch}">
++      <apex:param value="mailto:{!HTMLENCODE($Site.AdminEmailAddress)}"/>
++      <apex:param value="{!$Label.site.email_us}"/>
++    </apex:outputText>
++   </apex:define> 
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/BandwidthExceeded.page-meta.xml b/pages/BandwidthExceeded.page-meta.xml
+new file mode 100644
+index 0000000..4bcc7c7
+--- /dev/null
++++ b/pages/BandwidthExceeded.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Lightning Platform Limit Exceeded page</description>
++    <label>BandwidthExceeded</label>
++</ApexPage>
+diff --git a/pages/ChangePassword.page b/pages/ChangePassword.page
+new file mode 100644
+index 0000000..ffb6b69
+--- /dev/null
++++ b/pages/ChangePassword.page
+@@ -0,0 +1,41 @@
++<apex:page id="changePassword" showHeader="false" controller="ChangePasswordController" title="{!$Label.site.change_password}">
++  <apex:composition template="{!$Site.Template}">
++    <apex:define name="body">  
++      <center>
++        <apex:panelGrid bgcolor="white" columns="1"> 
++          <br/>
++          <br/>
++          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer"> 
++            <br/>
++            <apex:outputPanel layout="block" styleClass="topPanel">
++              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="2"> 
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
++                <apex:panelGroup >
++                  <br/>
++                  <apex:outputText styleClass="title" value="{!$Label.site.change_your_password}"/>
++                  <br/>
++                  <apex:form id="theForm">
++                    <apex:pageMessages id="error"/>
++                    <apex:panelGrid columns="2" style="margin-top:1em;">
++                      <apex:outputLabel rendered="{! !$Site.IsPasswordExpired}" value="{!$Label.site.old_password}" for="oldpsw"/>
++                      <apex:inputSecret required="true" id="oldpsw" rendered="{! !$Site.IsPasswordExpired}" value="{!oldPassword}"/>
++                      <apex:outputLabel value="{!$Label.site.new_password}" for="psw"/>
++                      <apex:inputSecret required="true" id="psw" value="{!newPassword}"/>
+
++                      <apex:outputLabel value="{!$Label.site.verify_new_password}" for="vpsw"/>
++                      <apex:inputSecret required="true" id="vpsw" value="{!verifyNewPassword}"/>
++                      <apex:outputText value=""/>
++                      <apex:commandButton id="cpwbtn" action="{!changePassword}" value="{!$Label.site.change_password}"/>
++                    </apex:panelGrid> 
++                  </apex:form>                  
++                  <br/>
++                </apex:panelGroup>
++              </apex:panelGrid> 
++             </apex:outputPanel>
++            <c:SiteFooter />
++          </apex:panelGrid> 
++       </apex:panelGrid>
++      </center>
++      <br/>
++    </apex:define>
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/ChangePassword.page-meta.xml b/pages/ChangePassword.page-meta.xml
+new file mode 100644
+index 0000000..8ec619d
+--- /dev/null
++++ b/pages/ChangePassword.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Salesforce Sites Change Password page</description>
++    <label>ChangePassword</label>
++</ApexPage>
+diff --git a/pages/ConnectOrgCallback.page b/pages/ConnectOrgCallback.page
+new file mode 100644
+index 0000000..389fdac
+--- /dev/null
++++ b/pages/ConnectOrgCallback.page
+@@ -0,0 +1,3 @@
++<apex:page showHeader="false" controller="ConnectOrgCallbackController" action="{!getRefreshToken}">
++
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/ConnectOrgCallback.page-meta.xml b/pages/ConnectOrgCallback.page-meta.xml
+new file mode 100644
+index 0000000..07100d0
+--- /dev/null
++++ b/pages/ConnectOrgCallback.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>51.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>ConnectOrgCallback</label>
++</ApexPage>
+diff --git a/pages/ConnectOrgSucceeded.page b/pages/ConnectOrgSucceeded.page
+new file mode 100644
+index 0000000..e149861
+--- /dev/null
++++ b/pages/ConnectOrgSucceeded.page
+@@ -0,0 +1,54 @@
++<apex:page showHeader="false" controller="ConnectOrgCallbackController" docType="html-5.0" applyBodyTag="False" applyHtmlTag="False">
++    <head>
++        <title>Authorization Succeeded</title>
++        <apex:slds /> 
++        <script>
++        var params = { "refresh_token" : "{!$CurrentPage.parameters.refresh_token}",
++                       "instance_url" : "{!$CurrentPage.parameters.instance_url}",
++                       "org_id" : "{!$CurrentPage.parameters.organization_id}",
++                       "error" : "{!$CurrentPage.parameters.error}"
++                        };
++        window.opener.postMessage(params, "*");
++        var handle = null;
++        if(params.error == "") {
++            handle = setInterval("moveProgressBar()", 100);
++        }
++        var progress = 100;
++        function moveProgressBar() {
++            document.querySelector(".slds-progress-bar__value_success").style.width = progress + '%';
++            progress -= 3;
++            if(progress <= 0) {
++                clearInterval(handle);
++                window.close();
++            }
++        }
++    </script>
++    <style>
++        .container {
++            display: flex;
++            align-items: center;
++            justify-content: center;
++            flex-direction: column;
++            height: 250px;
++        }
++    </style>
++    </head>
++    <body class="slds-scope">
++    <h1>{!$CurrentPage.parameters.error}</h1>
++    <div>
++        <div class="slds-progress-bar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" role="progressbar">
++            <span class="slds-progress-bar__value slds-progress-bar__value_success" style="width:100%">
++                <span class="slds-as
+sistive-text">Window closing...</span>
++            </span>
++        </div>
++        <div class="container">
++        <span class="slds-icon_container slds-icon_container_circle slds-icon-action-description">
++          <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
++              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#success')}" />
++          </svg>
++        </span>
++        <div>Organization connected!</div>
++        </div>
++    </div>
++    </body>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/ConnectOrgSucceeded.page-meta.xml b/pages/ConnectOrgSucceeded.page-meta.xml
+new file mode 100644
+index 0000000..d6854ff
+--- /dev/null
++++ b/pages/ConnectOrgSucceeded.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>51.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>ConnectOrgSucceeded</label>
++</ApexPage>
+diff --git a/pages/CredentialLogin.page b/pages/CredentialLogin.page
+new file mode 100644
+index 0000000..4fd18bf
+--- /dev/null
++++ b/pages/CredentialLogin.page
+@@ -0,0 +1,36 @@
++<apex:page controller="CredentialLoginController" action="{!init}" showHeader="false" sidebar="false">
++    <script>
++        function login()
++        {
++            document.getElementById('login').submit();
++        }
++        if({!AND(!expired, !nonExisted)})
++        {
++            window.onload = login;            
++        }
++    </script>
++    <apex:slds />
++    <apex:outputPanel id="expired" rendered="{!expired}" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -200%) rotate(0deg);font-size: 25px;color: #777;">
++        This URL is expired. Please refresh the page and copy the Login URL again. 
++    </apex:outputPanel>
++    <apex:outputPanel id="nonexisting" rendered="{!nonExisted}" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -200%) rotate(0deg);font-size: 25px;color: #777;">
++        Your selected credential is invalid or not existed. Please contact system administrator.
++    </apex:outputPanel>
++    <apex:outputPanel id="success" rendered="{!AND(!expired, !nonExisted)}">
++        <div class="slds-scope">
++            <apex:form id="form" style="height: 100%;">
++                <div id="spinner" class="slds-spinner_container" >
++                    <div role="status" class="slds-spinner slds-spinner--large slds-spinner--brand">
++                        <div class="slds-spinner__dot-a"></div>
++                        <div class="slds-spinner__dot-b"></div>
++                    </div>
++                </div>
++                <div style="color: #777;font-size:1.8125rem;position: absolute;top: 50%;left: 50%;z-index: 9051;transform: translate(-50%, -200%) rotate(0deg);">Logging in to {!credentialName}...<div style="font-size: 24px;color: #999;">{!userName}</div></div>
++            </apex:form>
++        </div>
++        <form id="login" action="{!targetURL}">
++            <input type="hidden" name="un" value="{!userName}" />
++            <input type="hidden" name="pw" value="{!passWord}" />
++        </form>
++    </apex:outputPanel>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/CredentialLogin.page-meta.xml b/pages/CredentialLogin.page-meta.xml
+new file mode 100644
+index 0000000..9cf395a
+--- /dev/null
++++ b/pages/CredentialLogin.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>CredentialLogin</label>
++</ApexPage>
+diff --git a/pages/Exception.page b/pages/Exception.page
+new file mode 100644
+index 0000000..802aa69
+--- /dev/null
++++ b/pages/Exception.page
+@@ -0,0 +1,37 @@
++<apex:page showHeader="false" title="{!$Label.site.error2}" cache="false"
+>
++  <apex:composition template="{!$Site.Template}">
++    <apex:define name="body">
++      <center>
++        <apex:panelGrid bgcolor="white" columns="1" style="align: center;">
++          <br/>
++          <br/>
++          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer">
++            <br/>
++            <apex:outputPanel layout="block" styleClass="topPanel">
++              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="3">
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/warning.png')}"/>
++                <apex:panelGroup >
++                  <apex:outputText styleClass="title" value="{!$Label.site.error}">
++                   <apex:param value="{!$Site.ErrorMessage}"/>
++                   <!-- this parameter needs to be italic in the site.error label -->
++                  </apex:outputText>
++                  <br/>
++                  <br/>
++                  <apex:outputText escape="false" value=" {!$Label.site.get_in_touch}">
++                   <apex:param value="mailto:{!HTMLENCODE($Site.AdminEmailAddress)}"/>
++                   <apex:param value="{!$Label.site.email_us}"/>
++                  </apex:outputText>
++                </apex:panelGroup>
++              </apex:panelGrid>
++             </apex:outputPanel>
++            <c:SitePoweredBy />
++          </apex:panelGrid>
++          <br/>
++          <apex:messages />
++          <br/>
++        </apex:panelGrid>
++      </center>
++    </apex:define>
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/Exception.page-meta.xml b/pages/Exception.page-meta.xml
+new file mode 100644
+index 0000000..97b1c84
+--- /dev/null
++++ b/pages/Exception.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Lightning Platformm page for post-authentication errors</description>
++    <label>Exception</label>
++</ApexPage>
+diff --git a/pages/FileNotFound.page b/pages/FileNotFound.page
+new file mode 100644
+index 0000000..20a5140
+--- /dev/null
++++ b/pages/FileNotFound.page
+@@ -0,0 +1,35 @@
++<apex:page showHeader="false" title="{!$Label.site.file_not_found}" cache="false">
++  <apex:composition template="{!$Site.Template}">
++    <apex:define name="body">
++      <center>
++        <apex:panelGrid bgcolor="white" columns="1">
++          <br/>
++          <br/>
++          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer">
++            <br/>
++            <apex:outputPanel layout="block" styleClass="topPanel">
++              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="3">
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/warning.png')}"/>
++                <apex:panelGroup >
++                  <apex:outputText styleClass="title" value="{!$Label.site.page_not_found_detail}">
++                   <apex:param value="{!$Site.OriginalUrl}"/>
++                  </apex:outputText>
++                  <br/>
++                  <br/>
++                  <apex:outputText value="{!$Label.site.stay_tuned}"/>
++                  <apex:outputText escape="false" value=" {!$Label.site.get_in_touch}">
++                   <apex:param value="mailto:{!HTMLENCODE($Site.AdminEmailAddress)}"/>
++                   <apex:param value="{!$Label.site.email_us}"/>
++                  </apex:outputText>
++                </apex:panelGroup>
++              </apex:panelGrid>
++             </apex:outputPanel>
++            <c:SitePoweredBy />
++          </apex:panelGrid>
++        </apex:panelGrid>
++      </center>
++    </apex:define>
++  </ape
+x:composition>
++  <site:previewAsAdmin />
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/FileNotFound.page-meta.xml b/pages/FileNotFound.page-meta.xml
+new file mode 100644
+index 0000000..6137123
+--- /dev/null
++++ b/pages/FileNotFound.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Lightning Platform Page/Data Not Found page</description>
++    <label>FileNotFound</label>
++</ApexPage>
+diff --git a/pages/ForgotPassword.page b/pages/ForgotPassword.page
+new file mode 100644
+index 0000000..9877886
+--- /dev/null
++++ b/pages/ForgotPassword.page
+@@ -0,0 +1,36 @@
++<apex:page id="forgotPassword" showHeader="false" controller="ForgotPasswordController" title="{!$Label.site.forgot_password}">
++ <apex:composition template="{!$Site.Template}">
++    <apex:define name="body">
++      <center>
++        <apex:panelGrid bgcolor="white" columns="1"> 
++          <br/>
++          <br/>
++          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer"> 
++            <br/>
++            <apex:outputPanel layout="block" styleClass="topPanel">
++              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="2"> 
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
++                <apex:panelGroup >
++                  <br/>
++                  <apex:outputText styleClass="title" value="{!$Label.site.enter_password}"/>
++                  <br/>
++                  <apex:form id="theForm">
++                    <apex:pageMessages id="error"/>
++                    <apex:panelGrid columns="3" style="margin-top:1em;">
++                      <apex:outputLabel value="{!$Label.site.username}" for="username"/>
++                      <apex:inputText required="true" id="username" value="{!username}"/>
++                      <apex:commandButton id="submit" value="{!$Label.site.submit}" action="{!forgotPassword}"/>
++                    </apex:panelGrid> 
++                    </apex:form>                  
++                  <br/>
++                </apex:panelGroup>
++              </apex:panelGrid> 
++             </apex:outputPanel>
++            <c:SitePoweredBy />
++          </apex:panelGrid> 
++       </apex:panelGrid>
++      </center>
++      <br/>
++    </apex:define>
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/ForgotPassword.page-meta.xml b/pages/ForgotPassword.page-meta.xml
+new file mode 100644
+index 0000000..fce40b2
+--- /dev/null
++++ b/pages/ForgotPassword.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Salesforce Sites Forgot Password Confirmation page</description>
++    <label>ForgotPassword</label>
++</ApexPage>
+diff --git a/pages/ForgotPasswordConfirm.page b/pages/ForgotPasswordConfirm.page
+new file mode 100644
+index 0000000..77f2654
+--- /dev/null
++++ b/pages/ForgotPasswordConfirm.page
+@@ -0,0 +1,30 @@
++<apex:page showHeader="false" title="{!$Label.site.forgot_password_confirmation}">
++  <apex:composition template="{!$Site.Template}">
++    <apex:define name="body">  
++      <center>
++        <apex:panelGrid bgcolor="white" columns="1"> 
++          <br/>
++          <br/>
++          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer"> 
++            <br/>
++            <apex:outputPanel layout="block" styleClass="topPanel">
++              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="2"> 
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/
+>
++                <apex:panelGroup >
++                  <br/>
++                  <apex:outputText styleClass="title" value="{!$Label.site.temp_password_sent}"/>
++                  <br/>
++                  <br/>
++                  <apex:outputLink value="{!$Page.SiteLogin}" rendered="{!$Site.LoginEnabled}">{!$Label.site.go_to_login_page}</apex:outputLink>
++                  <br/>
++                </apex:panelGroup>
++              </apex:panelGrid> 
++             </apex:outputPanel>
++            <c:SitePoweredBy />
++          </apex:panelGrid> 
++       </apex:panelGrid>
++      </center>
++      <br/>
++    </apex:define>
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/ForgotPasswordConfirm.page-meta.xml b/pages/ForgotPasswordConfirm.page-meta.xml
+new file mode 100644
+index 0000000..6bccaa2
+--- /dev/null
++++ b/pages/ForgotPasswordConfirm.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Salesforce Sites Forgot Password Confirmation page</description>
++    <label>ForgotPasswordConfirm</label>
++</ApexPage>
+diff --git a/pages/IdeasHome.page b/pages/IdeasHome.page
+new file mode 100644
+index 0000000..165405b
+--- /dev/null
++++ b/pages/IdeasHome.page
+@@ -0,0 +1 @@
++<apex:page action="{!URLFOR('/ideas/ideaList.apexp')}"/>
+\ No newline at end of file
+diff --git a/pages/IdeasHome.page-meta.xml b/pages/IdeasHome.page-meta.xml
+new file mode 100644
+index 0000000..7ac3117
+--- /dev/null
++++ b/pages/IdeasHome.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Lightning Platform home page for ideas sites</description>
++    <label>IdeasHome</label>
++</ApexPage>
+diff --git a/pages/InMaintenance.page b/pages/InMaintenance.page
+new file mode 100644
+index 0000000..0b2bea9
+--- /dev/null
++++ b/pages/InMaintenance.page
+@@ -0,0 +1,19 @@
++<apex:page showHeader="false" title="{!$Label.site.in_maintenance}" cache="false">
++  <apex:composition template="StdExceptionTemplate">
++    <apex:define name="icon">
++      <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/warning.png')}"/>
++    </apex:define>
++    <apex:define name="error">
++      <apex:outputText escape="false" styleClass="title" value="{!$Label.site.down_for_maintenance}">
++        <apex:param value="{!$Site.BaseUrl}"/>
++      </apex:outputText>
++      <br/>
++      <br/>
++      <apex:outputText value="{!$Label.site.sorry_for_inconvenience_back_shortly}"/>
++      <apex:outputText escape="false" value=" {!$Label.site.get_in_touch}">
++      <apex:param value="mailto:{!HTMLENCODE($Site.AdminEmailAddress)}"/>
++      <apex:param value="{!$Label.site.email_us}"/>
++    </apex:outputText>
++   </apex:define>
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/InMaintenance.page-meta.xml b/pages/InMaintenance.page-meta.xml
+new file mode 100644
+index 0000000..7cb7721
+--- /dev/null
++++ b/pages/InMaintenance.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Lightning Platform In Maintenance page</description>
++    <label>InMaintenance</label>
++</ApexPage>
+diff --git a/pages/LoginForm.page b/pages/LoginForm.page
+new file mode 100644
+index 0000000..66eebd3
+--- /dev/null
++++ b/pages/LoginForm.page
+@@ -0,0 +1,9 @@
++<apex:page showHeader="false" standardStylesheets="false">
++    <div style="position:fixed;background-repeat:no-repeat;width:100%;height:100%" id="backgrounDiv">
++        <div style
+="height: 300px;width: 840px;padding-top:80px;padding-left:65px;background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(145,145,145,0.8) 60%, rgba(255,255,255,0.01) 100%);"><img src="{!URLFOR($Resource.LoginBackground, 'logo.png')}" width="200" alt="logo"/></div>
++        <span style="color: #eee;font-size: 32px;left: 75px;top: 220px;position: fixed;">San Francisco based subject matter experts on Salesforce.</span>
++    </div>
++    <script>
++        document.querySelector("#backgrounDiv").style.backgroundImage = "url(\"/resource/LoginBackground/" + (Math.floor(Math.random() * 4) + 1) + ".jpg\")";
++    </script>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/LoginForm.page-meta.xml b/pages/LoginForm.page-meta.xml
+new file mode 100644
+index 0000000..c9a82a4
+--- /dev/null
++++ b/pages/LoginForm.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>Login Form</label>
++</ApexPage>
+diff --git a/pages/MyProfilePage.page b/pages/MyProfilePage.page
+new file mode 100644
+index 0000000..bf72930
+--- /dev/null
++++ b/pages/MyProfilePage.page
+@@ -0,0 +1,72 @@
++<apex:page id="portalUserProfilePage" controller="MyProfilePageController" showHeader="false" title="{!$Label.site.my_profile_page}">
++  <apex:composition template="{!$Site.Template}">
++    <apex:define name="body">
++        <apex:form id="theForm">
++          <apex:outputPanel style="padding:50px 50px 50px 50px" id="userDetail">
++           <apex:pageBlock title="{!$Label.site.my_profile}" id="editUserDetail" rendered="{!isEdit}">
++             <apex:pageMessages />
++             <apex:pageBlockButtons id="editButtons" location="top">
++               <apex:commandButton id="save" value="{!$Label.site.save}" action="{!save}" rerender="userDetail"/>
++               <apex:commandButton id="cancel" value="{!$Label.site.cancel}" action="{!cancel}" rerender="userDetail" immediate="true"/>
++             </apex:pageBlockButtons>
++             <apex:pageBlockSection id="editUserSection" columns="1" title="{!$Label.site.user_information}">
++                 <apex:inputField id="editusername" value="{!user.username}"/>
++                 <apex:inputField id="edittimezone" value="{!user.timezonesidkey}"/> 
++                 <apex:inputField id="editlocale" value="{!user.localesidkey}"/> 
++                 <apex:inputField id="editlanguage" value="{!user.languagelocalekey}"/> 
++                 <apex:inputField id="editcommunityNickname" value="{!user.communityNickname}"/> 
++             </apex:pageBlockSection>
++             <apex:pageBlockSection id="editContactSection" columns="2" title="{!$Label.site.contact_information}">
++                 <apex:inputField id="editfirstName" value="{!user.firstName}"/> 
++                 <apex:inputField id="editemail" value="{!user.email}"/> 
++                 <apex:inputField id="editlastName" value="{!user.lastName}"/> 
++                 <apex:inputField id="editphone" value="{!user.phone}"/> 
++                 <apex:inputField id="edittitle" value="{!user.title}"/> 
++                 <apex:inputField id="editextension" value="{!user.extension}"/> 
++                 <apex:pageBlockSectionItem />
++                 <apex:inputField id="editfax" value="{!user.fax}"/>
++                 <apex:pageBlockSectionItem />
++                 <apex:inputField id="editmobile" value="{!user.mobilephone}"/> 
++               </apex:pageBlockSection>
++               <apex:pageBlockSection id="editAddressInformation" columns="1" title="{!$Label.site.address_information}">
++                 <apex:inputField id="editstreet" value="{!user.street}"/> 
++                 <apex:inputField id="editcity" value="{!user.city}"/> 
++                 <apex:inputField id="editstate" value="{!user.state}"/> 
++                 <apex:inputField id="editpostalcode" value="{!user.postalcode}"/> 
++                 <apex:inputField id="editcount
+ry" value="{!user.country}"/> 
++               </apex:pageBlockSection>
++           </apex:pageBlock>         
++        
++            <apex:pageBlock title="{!$Label.site.my_profile}" id="viewUserDetail" rendered="{!!isEdit}">
++                 <apex:pageBlockButtons id="detailButtons" location="top">
++                   <apex:commandButton id="edit" value="{!$Label.site.edit}" action="{!edit}" rerender="userDetail"/>
++                   <apex:commandButton id="changePassword" value="{!$Label.site.change_password}" action="{!changePassword}"/>
++                 </apex:pageBlockButtons>
++                 <apex:pageBlockSection id="viewUserSection" columns="2" title="{!$Label.site.user_information}">
++                     <apex:outputField id="detailusername" value="{!user.username}"/>
++                     <apex:outputField id="detailtimezone" value="{!user.timezonesidkey}"/> 
++                     <apex:outputField id="detaillocale" value="{!user.localesidkey}"/> 
++                     <apex:outputField id="detaillanguage" value="{!user.languagelocalekey}"/> 
++                     <apex:outputField id="detailcommunityNickname" value="{!user.communityNickname}"/> 
++                 </apex:pageBlockSection>
++                 <apex:pageBlockSection id="viewContactSection" columns="2" title="{!$Label.site.contact_information}">
++                     <apex:outputField id="detailemail" value="{!user.email}"/> 
++                     <apex:outputField id="detailfirstName" value="{!user.firstName}"/> 
++                     <apex:outputField id="detaillastName" value="{!user.lastName}"/> 
++                     <apex:outputField id="detailtitle" value="{!user.title}"/> 
++                     <apex:outputField id="detailphone" value="{!user.phone}"/> 
++                     <apex:outputField id="detailstreet" value="{!user.street}"/> 
++                     <apex:outputField id="detailcity" value="{!user.city}"/> 
++                     <apex:outputField id="detailstate" value="{!user.state}"/> 
++                     <apex:outputField id="detailpostalcode" value="{!user.postalcode}"/> 
++                     <apex:outputField id="detailcountry" value="{!user.country}"/> 
++                     <apex:outputField id="detailextension" value="{!user.extension}"/> 
++                     <apex:outputField id="detailfax" value="{!user.fax}"/> 
++                     <apex:outputField id="detailmobile" value="{!user.mobilephone}"/> 
++                  </apex:pageBlockSection>
++               </apex:pageBlock>
++            </apex:outputPanel>
++         </apex:form>
++    </apex:define>
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/MyProfilePage.page-meta.xml b/pages/MyProfilePage.page-meta.xml
+new file mode 100644
+index 0000000..f3d466b
+--- /dev/null
++++ b/pages/MyProfilePage.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Salesforce Sites My Profile page</description>
++    <label>MyProfilePage</label>
++</ApexPage>
+diff --git a/pages/QBAuthPage.page b/pages/QBAuthPage.page
+new file mode 100644
+index 0000000..2b6fba4
+--- /dev/null
++++ b/pages/QBAuthPage.page
+@@ -0,0 +1,12 @@
++<apex:page controller="QBAuthController" action="{!completeAuthorization}">
++    <apex:form style="width: 100%;text-align: center;margin-top: 200px;">
++        Service Name: 
++        <apex:selectList value="{!service}" size="1">
++            <apex:selectOptions value="{!services}"/>
++        </apex:selectList>
++        <p/>
++        <apex:commandButton action="{!authorize}" value="Authorize" id="authButton"/>
++        <p/>
++        <apex:outputText rendered="{!message!=null}" value="Result: {!message}"/>
++    </apex:form>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/QBAuthPage.page-meta.xml b/pages/QBAuthPage.page-meta.xml
+new file mode 100644
+index 0000000..23ba16a
+--- /
+dev/null
++++ b/pages/QBAuthPage.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>46.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>QBAuthPage</label>
++</ApexPage>
+diff --git a/pages/SiteLogin.page b/pages/SiteLogin.page
+new file mode 100644
+index 0000000..6f0900b
+--- /dev/null
++++ b/pages/SiteLogin.page
+@@ -0,0 +1,29 @@
++<apex:page id="loginPage" showHeader="false" title="{!$Label.site.site_login}">
++  <apex:composition template="{!$Site.Template}">
++    <apex:define name="body">  
++      <center>
++        <apex:panelGrid bgcolor="white" columns="1"> 
++          <br/>
++          <br/>
++          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer"> 
++            <br/>
++            <apex:outputPanel layout="block" styleClass="topPanel">
++              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="2"> 
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
++                <apex:panelGroup >
++                  <br/>
++                  <apex:outputText styleClass="title" value="{!$Label.site.login}"/>
++                  <br/>
++                  <c:SiteLogin id="siteLogin"/>
++                  <br/>
++                </apex:panelGroup>
++              </apex:panelGrid> 
++             </apex:outputPanel>
++            <c:SitePoweredBy />
++          </apex:panelGrid> 
++       </apex:panelGrid>
++      </center>
++      <br/>
++    </apex:define>
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/SiteLogin.page-meta.xml b/pages/SiteLogin.page-meta.xml
+new file mode 100644
+index 0000000..5fa3a05
+--- /dev/null
++++ b/pages/SiteLogin.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Salesforce Sites Login page</description>
++    <label>SiteLogin</label>
++</ApexPage>
+diff --git a/pages/SiteRegister.page b/pages/SiteRegister.page
+new file mode 100644
+index 0000000..b4e443e
+--- /dev/null
++++ b/pages/SiteRegister.page
+@@ -0,0 +1,45 @@
++<apex:page id="Registration" showHeader="false" controller="SiteRegisterController" title="{!$Label.site.register}">
++  <apex:composition template="{!$Site.Template}">
++    <apex:define name="body">  
++      <center>
++        <apex:panelGrid bgcolor="white" columns="1"> 
++          <br/>
++          <br/>
++          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer"> 
++            <br/>
++            <apex:outputPanel layout="block" styleClass="topPanel">
++              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="2"> 
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
++                <apex:panelGroup >
++                  <br/>
++                  <apex:outputText styleClass="title" value="{!$Label.site.user_registration}"/>
++                  <br/>
++                  <apex:form id="theForm" forceSSL="true">
++                    <apex:pageMessages id="error"/>
++                    <apex:panelGrid columns="2" style="margin-top:1em;">
++                      <apex:outputLabel value="{!$Label.site.username}" for="username"/>
++                      <apex:inputText required="true" id="username" value="{!username}"/>
++                      <apex:outputLabel value="{!$Label.site.community_nickname}" for="communityNickname"/>
++                      <apex:inputText required="true" id="communityNickname" value="{!communityNickname}"/>
++                      <apex:outputLabel value="{!$Label.site.email}" for="email"/>
++                      <apex:inputText required="true" id="e
+mail" value="{!email}"/>
++                      <apex:outputLabel value="{!$Label.site.password}" for="password"/>
++                      <apex:inputSecret id="password" value="{!password}"/>
++                      <apex:outputLabel value="{!$Label.site.confirm_password}" for="confirmPassword"/>
++                      <apex:inputSecret id="confirmPassword" value="{!confirmPassword}"/>
++                      <apex:outputText value=""/>
++                      <apex:commandButton action="{!registerUser}" value="{!$Label.site.submit}" id="submit"/>
++                    </apex:panelGrid> 
++                    </apex:form>                  
++                  <br/>
++                </apex:panelGroup>
++              </apex:panelGrid> 
++             </apex:outputPanel>
++            <c:SitePoweredBy />
++          </apex:panelGrid> 
++       </apex:panelGrid>
++      </center>
++      <br/>
++    </apex:define>
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/SiteRegister.page-meta.xml b/pages/SiteRegister.page-meta.xml
+new file mode 100644
+index 0000000..946b963
+--- /dev/null
++++ b/pages/SiteRegister.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Salesforce Sites User Registration page</description>
++    <label>SiteRegister</label>
++</ApexPage>
+diff --git a/pages/SiteRegisterConfirm.page b/pages/SiteRegisterConfirm.page
+new file mode 100644
+index 0000000..6001957
+--- /dev/null
++++ b/pages/SiteRegisterConfirm.page
+@@ -0,0 +1,30 @@
++<apex:page showHeader="false" title="{!$Label.site.registration_confirmation}">
++  <apex:composition template="{!$Site.Template}">
++    <apex:define name="body">  
++      <center>
++        <apex:panelGrid bgcolor="white" columns="1" style="align: center;"> 
++          <br/>
++          <br/>
++          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" style="topPanel"> 
++            <br/>
++            <apex:outputPanel layout="block" styleClass="topPanelContainer">
++              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="2"> 
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
++                <apex:panelGroup >
++                  <br/>
++                  <apex:outputText styleClass="title" value="{!$Label.site.thank_you_for_registering}"/>
++                  <br/>
++                  <br/>
++                  <apex:outputLink value="{!$Page.SiteLogin}" rendered="{!$Site.LoginEnabled}">{!$Label.site.go_to_login_page}</apex:outputLink>
++                  <br/>
++                </apex:panelGroup>
++              </apex:panelGrid> 
++            </apex:outputPanel>
++            <c:SitePoweredBy />
++          </apex:panelGrid> 
++       </apex:panelGrid>
++      </center>
++      <br/>
++    </apex:define>
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/SiteRegisterConfirm.page-meta.xml b/pages/SiteRegisterConfirm.page-meta.xml
+new file mode 100644
+index 0000000..8b7833d
+--- /dev/null
++++ b/pages/SiteRegisterConfirm.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Salesforce Sites User Registration Confirmation page</description>
++    <label>SiteRegisterConfirm</label>
++</ApexPage>
+diff --git a/pages/SiteTemplate.page b/pages/SiteTemplate.page
+new file mode 100644
+index 0000000..2476eb5
+--- /dev/null
++++ b/pages/SiteTemplate.page
+@@ -0,0 +1,13 @@
++<apex:page showHeader="false" id="SiteTemplate">
++  <apex:stylesheet value="{!URLFOR($Resource.SiteSamples, 'SiteStyles.css')}"/>
++  <apex:insert name="header">
++    <c:SiteHeader />
++    
+<hr/>
++  </apex:insert>
++  <apex:insert name="body"/>
++  <apex:insert name="footer">
++    <hr/>
++    <c:SiteFooter />
++    <site:googleAnalyticsTracking />
++  </apex:insert>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/SiteTemplate.page-meta.xml b/pages/SiteTemplate.page-meta.xml
+new file mode 100644
+index 0000000..53242b9
+--- /dev/null
++++ b/pages/SiteTemplate.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Lightning Platform template for site pages</description>
++    <label>SiteTemplate</label>
++</ApexPage>
+diff --git a/pages/SnapBiWebSiteHomePage.page b/pages/SnapBiWebSiteHomePage.page
+new file mode 100644
+index 0000000..18152c9
+--- /dev/null
++++ b/pages/SnapBiWebSiteHomePage.page
+@@ -0,0 +1,326 @@
++<apex:page controller="SnapbiWebSiteHomePageController" showHeader="false" standardStylesheets="false">
++    <head>
++        <meta charset="utf-8" />
++        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
++        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
++        <title>SNAPBI</title>
++        <!-- CSS -->
++        <apex:stylesheet value="{!URLFOR($Resource.WebsiteHomePage, 'css/bootstrap.min.css')}"/>
++        <apex:stylesheet value="{!URLFOR($Resource.WebsiteHomePage, 'css/font-awesome.min.css')}"/>
++        <apex:stylesheet value="{!URLFOR($Resource.WebsiteHomePage, 'css/buttons.css')}"/>
++        <apex:stylesheet value="{!URLFOR($Resource.WebsiteHomePage, 'css/swiper.min.css')}"/>
++        <apex:stylesheet value="{!URLFOR($Resource.WebsiteHomePage, 'css/main.css')}"/>
++        <apex:stylesheet value="{!URLFOR($Resource.WebsiteHomePage, 'css/styles.css')}"/>
++
++        <apex:stylesheet value="{!URLFOR($Resource.WebsiteHomePage, 'css/demo.css')}"/>
++        <apex:stylesheet value="{!URLFOR($Resource.WebsiteHomePage, 'css/default.css')}"/>
++        <apex:stylesheet value="{!URLFOR($Resource.WebsiteHomePage, 'css/Lobibox.min.css')}"/>
++
++        <apex:includeScript value="{!URLFOR($Resource.WebsiteHomePage, 'js/jquery.js')}"/>
++        <apex:includeScript value="{!URLFOR($Resource.WebsiteHomePage, 'js/bootstrap.min.js')}"/>
++        <apex:includeScript value="{!URLFOR($Resource.WebsiteHomePage, 'js/Lobibox.min.js')}"/>
++        <apex:includeScript value="{!URLFOR($Resource.WebsiteHomePage, 'js/snapbi.js')}"/>
++        <apex:includeScript value="{!URLFOR($Resource.WebsiteHomePage, 'js/mobile-detect.min.js')}"/>
++    </head><!--/head-->
++    <body id="home" class="homepage">
++    <script>
++        var imgRootUrl = "{!URLFOR($Resource.WebsiteHomePage, 'images/team/')}";
++        $(function () {
++            var IMG_PREFIX = imgRootUrl;
++            (function () {
++                (function () {
++                    var allActiveUsers = {!JSONAllActiveUsers};
++                    allActiveUsers.forEach(activeUser=>{
++                        $('#'+activeUser.FirstName).click(function (event) {
++                            event.stopPropagation();
++                            Lobibox.notify('info', {
++                                img: IMG_PREFIX + activeUser.FirstName+'.png',
++                                title: activeUser.FirstName,
++                                size: 'large',
++                                msg: activeUser.Description,
++                            });
++                        });
++                    });
++                })();
++                //------------------------------------------------------------------------------
++            })();
++        });
++    </script>
++    <header id="header">
++        <nav id="main-menu" class="navbar navbar-default navbar-fixed-top" role="banner">
++            <div class="container">
++                <div class="navbar-header">
++                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
++                        <span class="sr-only">Toggle navigation</span>
++                        <span class="icon-bar"></span>
++                        <span class="icon-bar"></span>
++                        <span class="icon-bar"></span>
++                    </button>
++                    <a class="navbar-brand" style="padding: 0;">
++                        <img src="{!URLFOR($Resource.WebsiteHomePage, 'images/logo.png')}" alt="logo" />
++                    </a>
++                </div>
++
++                <div class="collapse navbar-collapse navbar-right">
++                    <ul class="nav navbar-nav">
++                        <li class="scroll"><a href="#about">About Us</a></li>
++                        <li class="scroll"><a href="#team">The Team</a></li>
++                        <li class="scroll"><a href="mailto:contact@snapbi.com?subject=Hey, I found you on SNAPbi Website" target="_self">Contact</a></li>
++                    </ul>
++                </div>
++            </div><!--/.container-->
++        </nav><!--/nav-->
++    </header><!--/header-->
++    <section id="features" style="background-color: #000;">
++        <div class="container">
++            <div class="row">
++                <div class="col-sm-6 Trust">
++                    <div class="media service-box wow fadeInRight">
++                        <div class="media-body">
++                            <span class="media-heading">Trust</span>
++                        </div>
++                    </div>
++                </div>
++                <div class="col-sm-6 TrustImg">
++                    <div>
++                        <img src="{!URLFOR($Resource.WebsiteHomePage, 'images/main-feature.jpg')}" alt="" style="border-radius: 50%;" />
++                    </div>
++                </div>
++                <div class="col-sm-6 TrustDes">
++                    <div class="media service-box wow fadeInRight">
++                        <div class="media-body">
++                            <p>Bespoke Salesforce for Bay Area tech companies</p>
++                        </div>
++                    </div>
++                </div>
++                <div class="col-sm-6 TrustButton">
++                    <div class="media service-box wow fadeInRight">
++                        <div class="media-body">
++                            <a href="mailto:contact@snapbi.com?subject=Hey, I found you on SNAPbi Website" target="_self" data-type="external" rel="nofollow" role="button" class="button button-large cus-button">
++                                <span id="AppExchange" class="style-jlyzootxlabel">Contact Us</span>
++                            </a>
++                        </div>
++                    </div>
++                </div>
++            </div>
++        </div>
++    </section>
++    <section id="about">
++        <div class="container">
++            <div class="row">
++                <div class="col-sm-6" style="float:right;">
++                    <div class="media service-box wow fadeInRight">
++                        <div class="media-body">
++                            <h4 class="media-heading" style="font: normal normal bold 60px/.5em worksans-semibold,'work sans',sans-serif;color: #AFAFAF;">About Us</h4>
++                        </div>
++                    </div>
++                    <div class="media service-box wow fadeInRight">
++                        <div class="media-body">
++                            <p class="about">Based in San Francisco and focused on Bay Area Tech companies, we are an implementation partner that values honesty, responsiveness and giving back. We have fun, while providing unmatched service to our clients. Our core strategy is simple: we work every day to build long-term delight with our clients and earn their business for the long haul.</p>
++                        </div>
++                    </div>
++                </div>
++                <div class="col-sm-6">
++                    <div class="media service-box wow fadeInRight cus-button-con">
++                        <div class="media-body">
++                            <a href="https://appexch
+ange.salesforce.com/listingDetail?listingId=a0N30000000puvAEAQ" target="_blank" data-content="https://appexchange.salesforce.com/listingDetail?listingId=a0N30000000puvAEAQ" data-type="external" rel="nofollow" role="button" class="button button-large cus-button">
++                                <span id="AppExchange" class="style-jlyzootxlabel">Our AppExchange Listing</span>
++                            </a>
++                        </div>
++                    </div>
++                </div>
++            </div>
++        </div>
++    </section>
++    <section id="main-video">
++        <div class="">
++            <div class="">
++                <div class="media-video">
++                    <iframe src="https://www.youtube.com/embed/K6vDXJZlv-s?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true"></iframe>
++                </div>
++            </div>
++        </div>
++    </section>
++    <section id="mian-story" style="background-color: rgba(51, 51, 51, 1);padding: 2rem 4rem;">
++        <div class="">
++            <div class="row">
++                <div class="col-sm-12 textTitle">
++                    <div class="media service-box-story wow fadeInRight">
++                        <div class="media-body">
++                            <span class="storyHeader">Our Origin Story</span>
++                        </div>
++                    </div>
++                    <div class="media service-box-story wow fadeInRight">
++                        <div class="media-body">
++                            <p class="description" style="font-weight: 300;line-height: 20px;letter-spacing: 1.0px;">SNAP was born from entrepreneurs doing Silicon Valley start ups and using Salesforce to manage the business. After twenty years, and many companies, our team became very capable with Salesforce and as our skills grew, so did our passion for the platform. In 2013 the decision was made to take our business experience and our passion for Salesforce to create a consulting company.</p>
++                            <p class="description" style="font-weight: 300;line-height: 20px;letter-spacing: 1.0px;">SNAP started with 4 team members and 2 clients; our business plan was simple: “Have delighted Clients”. We figured that delighted clients would hire us for more work and tell their friends. It was a very simple business strategy that has worked very well. Today, SNAP is based in San Francisco, has a grown a team of exceptional people and the portfolio includes over 60 active clients. We have been in our clients shoes, we understand their issues and we recommend best practices so their users love the system and the leadership team gets reliable data they can trust.</p>
++                        </div>
++                    </div>
++                </div>
++            </div>
++        </div>
++    </section>
++    <section id="team">
++        <div class="container">
++            <div class="row">
++                <div class="col-sm-12 textTitle">
++                    <div class="media service-box wow fadeInRight">
++                        <div class="media-body">
++                            <h4 class="media-heading" style="font: normal normal bold 60px/1.4em worksans-semibold,'work sans',sans-serif;color: #AFAFAF;">The Team</h4>
++                        </div>
++                    </div>
++                </div>
++                <div class="teamImg">
++                    <div class="swiper-wrapper">
++                        <apex:repeat value="{!allActiveUsers}" var="activeUser">
++                            <div class="imgContainer" id="{!activeUser['FirstName']}">
++                                <img src="{!URLFOR($Resource.WebsiteHomePage, 'images/team/')}{!URLFOR(activeUser['FirstName'])}.png" />
++                            </div>
++                        </apex:repeat>
++                    </div>
++                </div>
++            </div>
++        </div>
++    </section>
++    <section>
++        <div class="container">
++            <div class="row">
++                <div class="tipsContainer">
++                    <div class="media wow fadeInRight">
++                        <div class="media-body">
++                            <div class="lobibox-notify-wrapper-large bottom right">
++                                <div class="tab-content">
++                                </div>
++                            </div>
++                        </div>
++                    </div>
++                </div>
++            </div>
++        </div>
++    </section>
++    <section id="hire" style="margin-bottom:50px;">
++        <div class="container">
++            <div class="row">
++                <div class="col-sm-6">
++                    <div class="media service-box wow fadeInRight">
++                        <div class="media-body">
++                            <h4 class="media-heading" style="font: normal normal bold 30px/1.4em worksans-semibold,'work sans',sans-serif;color: #AFAFAF;">SNAP's always hiring!</h4>
++                        </div>
++                    </div>
++                    <div class="media wow fadeInRight">
++                        <div class="media-body">
++                            <p style="font-size: 13px;color: #AFAFAF;font-weight: 300;line-height: 20px;letter-spacing: 1.0px;width: 80%;margin-left: 40px;">We're looking for rockstars looking for the next step in their career to run exciting Quote-To-Cash, Service Cloud, Integration and Lightning Migration projects for our clients. We grow leaders! Contact us for more details!</p>
++                        </div>
++                    </div>
++                </div>
++                <div class="col-sm-6 hireButton" style="margin-top:0;">
++                    <div class="media service-box wow fadeInRight cus-button-con">
++                        <div class="media-body">
++                            <a href="mailto:hello@snapbi.com?subject=I want to join Snap" target="_self" data-type="external" rel="nofollow" role="button" class="button button-large cus-button">
++                                <span id="AppExchange" class="style-jlyzootxlabel">JOIN SNAP</span>
++                            </a>
++                        </div>
++                    </div>
++                </div>
++            </div>
++        </div>
++    </section>
++    <section id="SFDC">
++        <div class="">
++            <div class="row">
++                <div class="col-sm-6">
++                    <div class="media wow fadeInRight">
++                        <div class="media-body">
++                            <img class="img-responsive" src="{!URLFOR($Resource.WebsiteHomePage, 'images/SFDC.png')}" alt="" style="width:100%;" />
++                        </div>
++                    </div>
++                </div>
++                <div class="col-sm-6" style="margin-top:20px;">
++                    <div class="media wow fadeInRight">
++                        <div class="media-body">
++                            <p class="SFDCP1">
++                                    <span>
++                                        <span>Having worked with several SFDC partners in my career, I can honestly say that SNAP team is the "best in the business". </span>
++                                    </span>
++                            </p>
++                            <p class="SFDCP2">
++                                    <span>
++                                        Leslie Canning, Sales Enablement VP
++                                    </span>
++                            </p>
++                        </div>
++                    </div>
++                </div>
++            </div>
++        </div>
++    </section>
++    <!--/#bottom-->
++    <section id="mian-TESTIMONIALS" class="testimonials_hidden">
++        <div class="">
++            <div class="row">
++                <div class="col-sm-12 textTitle">
++                    <div class="media  wow fadeInRight">
++                        <div class="media-body">
++                            <span class="testimonialsHeader">TESTIMONIALS</span>
++                        </div>
++                    </div>
++                    <div class="media  wow fadeInRight">
++                        <div class="media-body">
++                            <p class="description" style="font-weight: 300;line-height: 25px;letter-spacing: 1.0px;">I&apos;ve historically worked at companies with dedicated business applications teams - SNAP has been a very welcome change to that model. Since joining the organization several months ago, SNAP has supported the launch of 3 large SFDC projects and guided us through a myriad of smaller but still impactful system changes. The team is highly responsive, brings a broad range of technical experience and has access to applications/tools we'd otherwise have to purchase. They are highly communicative and skilled at guiding us, given their knowledge of the industry and best practices. All this AND they're incredibly friendly and fun..</p>
++                        </div>
++                    </div>
++                    <div class="media  wow fadeInRight">
++                        <div class="media-body">
++                            <h4 style="text-align: center;font-family: helvetica-w01-light,helvetica-w02-light,sans-serif;font-weight: 100;color: #636363;font-size: 15px;letter-spacing: 0.04em;">LISA BURKE, SR. MANAGER SALES OPERATIONS</h4>
++                        </div>
++                    </div>
++                    <div class="media  wow fadeInRight">
++                        <div class="media-body">
++                            <p class="description" style="font-weight: 300;line-height: 25px;letter-spacing: 1.0px;">"I have worked with 7 or 8 consulting firms regarding various Salesforce projects, and I can tell you it doesn't get any better than SNAP! We started working with SNAP about a year ago, after 2 consultants from the first firm we had hired did not work out. When I sat down with SNAP to discuss expectations, they were: do good work, do it on time, and be responsive. In addition to these criteria, they have also been efficient in their delivery! We have used them to do a custom pricing calculator and quoting tool, as well as various other smaller projects that require APEX/more advanced configuration in our environment. They really work with you to understand your needs, come up with clean solutions, and turn it around quickly. So glad we found SNAP! If you are local to the San Francisco area, I cannot recommend a better partner for any project or day to day needs regarding Salesforce or a variety of partner apps."</p>
++                        </div>
++                    </div>
++                    <div class="media  wow fadeInRight">
++                        <div class="media-body">
++                            <h4 style="text-align: center;font-family: helvetica-w01-light,helvetica-w02-light,sans-serif;font-weight: 100;color: #636363;font-size: 15px;letter-spacing: 0.04em;">SAMANTHA JONES, PROJECT MANAGER</h4>
++                        </div>
++                    </div>
++                    <div class="media  wow fadeInRight" style="">
++                        <div class="media-body">
++                            <a href="https://appexchange.salesforce.com/listingDetail?listingId=a0N30000000puvAEAQ" target="_blank" data-content="https://appexchange.salesforce.com/listingDetail?listingId=a0N30000000puvAEAQ" data-type="external" rel="nofollow" role="button" class="button cus-button-more button-large">
++                                <span id="AppExchange" class="style-jlyzootxlabel">More Reviews</span>
++                            </a>
++                        </div>
++                    </div>
++                </div>
++            </div>
++        </div>
++    </section>
++    <section id="angle" class="moreOrHidden">
++        <a id="angle-down"  class="angle"><i class="fa fa-angle-double-down"></i></a>
++    </section>
++    <footer id="footer">
++        <div class="container">
++            <div class="row">
++                <div class="col-sm-12 textTitle">
++                    <ul class="social-icons">
++                        <li><a href="https://www.facebook.com/Snapbi/"><i class="fa fa-facebook"></i></a></li>
++                        <li><a href="http://www.twitter.com/sna
+pbi"><i class="fa fa-twitter"></i></a></li>
++                        <li><a href="https://youtu.be/K6vDXJZlv-s"><i class="fa fa-youtube"></i></a></li>
++                        <li><a href="https://www.linkedin.com/company/snapbi/"><i class="fa fa-linkedin"></i></a></li>
++                    </ul>
++                </div>
++            </div>
++        </div>
++    </footer>
++    <footer id="footer2">
++        <div class="container">
++            <div class="row">
++                <div class="col-sm-12 textTitle about" style="font-size:12px;padding: 20px 0;">
++                    &copy; 2018 by SNAP Business Intelligence
++                </div>
++            </div>
++        </div>
++    </footer>
++    <site:googleAnalyticsTracking />
++    </body>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/SnapBiWebSiteHomePage.page-meta.xml b/pages/SnapBiWebSiteHomePage.page-meta.xml
+new file mode 100644
+index 0000000..1c11154
+--- /dev/null
++++ b/pages/SnapBiWebSiteHomePage.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>43.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>SnapBiWebSiteHomePage</label>
++</ApexPage>
+diff --git a/pages/SnapbiInvoiceExcel.page b/pages/SnapbiInvoiceExcel.page
+new file mode 100644
+index 0000000..9ef1119
+--- /dev/null
++++ b/pages/SnapbiInvoiceExcel.page
+@@ -0,0 +1,151 @@
++<apex:page standardController="Invoice__c" extensions="InvoiceExcelController" showHeader="false" sidebar="false" contentType="txt/xml#{!excelName}.xls">
++    <head>
++        <style type="text/css">
++            thead tr th
++            {
++                background-color: #B0A0FF;  
++            }
++            .title
++            {
++                background-color: #FFFFFF;
++                font-size: 18px;
++                text-align: center;
++            }
++            .topic th
++            {
++                text-align: center;
++                width: 120px;
++            }
++            .topic .brief
++            {
++                width: 300px;
++            }
++            .projectDetail td
++            {
++                background-color: #AAAAAA;
++            }
++            .groupDetail td
++            {
++                background-color: #b8b8b8;
++            }
++            .taskDetail td
++            {
++                background-color: #DDDDDD;
++            }
++            .footDetail td
++            {
++                background-color: #ACA7CD;
++            }
++        </style>
++    </head>
++    <body>
++        <table cellpadding="10" cellspacing="1">
++            <thead>
++                <tr >
++                    <th colspan="6" class="title">Time Card Report For {!invoice.Account__r.Name}</th>
++                </tr>
++                <tr class="topic">
++                    <th class="brief">Brief</th>
++                    <th>Date</th>
++                    <th>Time Card Number</th>
++                    <th>Team Member Name</th>
++                    <th>Billable Hours</th>
++                    <th>Total Hours</th>
++                </tr>
++                <tr>
++                    <th colspan="6" style="text-align: left;"></th>
++                </tr>
++                <tr>
++                    <th></th>
++                    <th></th>
++                    <th></th>
++                    <th></th>
++                    <th style="text-align: center;">{!billableHours}</th>
++                    <th style="text-align: center;">{!timeCardHours}</th>
++                </tr>
++            </thead>
++            <tbody>
++                <apex:repeat value="{!projects}" var="project" >
++                    <tr class="projectDetail">
++                        <td colspan="6" style="padding-left: 15px;">Project: {!project.projectName} ({!project.totalRecord} records)</td>
++                    </tr>
++                    <tr class="projectDetail">
++                        <td></td>
++                        <td></td>
++                        <td></td>
++      
+                  <td></td>
++                        <td></td>
++                        <td></td>
++                    </tr>
++                    
++                    <apex:repeat value="{!project.projectTaskGroups}" var="group">
++                        <tr class="groupDetail">
++                            <td colspan="6" style="padding-left: 30px;">Task Group: {!group.groupName} ({!group.totalRecord} records)</td>
++                        </tr>
++                        <tr class="groupDetail">
++                            <td></td>
++                            <td></td>
++                            <td></td>
++                            <td></td>
++                            <td></td>
++                            <td></td>
++                        </tr>
++                        <apex:repeat value="{!group.projectTasks}" var="task">
++                            <apex:outputPanel layout="none" rendered="{!task.taskName != 'N/A'}">
++                            <tr class="taskDetail">
++                                <td colspan="6" style="padding-left: 45px;">Task: {!task.taskName} ({!task.totalRecord} records)</td>   
++                            </tr>
++                            <tr class="taskDetail">
++                                <td></td>
++                                <td></td>
++                                <td></td>
++                                <td></td>
++                                <td></td>
++                                <td></td>
++                            </tr>
++                            </apex:outputPanel>
++                            <apex:repeat value="{!task.timeHours}" var="timeHour" >
++                                <tr>
++                                    <td><apex:outputText value="{!timeHour.Brief__c}"></apex:outputText></td>
++                                    <td style="text-align: right;">
++                                        <apex:outputText value="{0,date,MM/dd/yyyy}">
++                                            <apex:param value="{!timeHour.Date__c}" />
++                                        </apex:outputText>
++                                    </td>
++                                    <td><apex:outputText value="{!timeHour.TimeCard__r.Name}" /></td>
++                                    <td><apex:outputText value="{!timeHour.User__r.Name}"/> </td>
++                                    <td><apex:outputText rendered="{!and(timeHour.Billable__c, timeHour.TimeCard__r.InvoiceLine__r.Invoice__r.Print_Details__c)}" value="{!timeHour.Hours__c}"/></td>
++                                    <td></td>
++                                </tr>
++                            </apex:repeat>
++                        </apex:repeat> 
++                    </apex:repeat>
++                </apex:repeat>
++            </tbody>
++            <tfoot>
++                <tr></tr>
++                <tr>
++                    <th colspan="6" style="text-align: left;background-color: #ACA7CD;">Grand Total ({!totalRecords} records)</th>
++                </tr>
++                <tr class="footDetail">
++                    <td></td>
++                    <td></td>
++                    <td></td>
++                    <td></td>
++                    <td></td>
++                    <td></td>
++                </tr>
++                <tr></tr>
++                <tr>
++                    <td colspan="6">
++                        Copyright (c) 2000-{!YEAR(TODAY())} salesforce.com, inc. All rights reserved.<br/>
++                        Confidential Information - Do Not Distribute <br/>
++                        Generated By: {!$User.FirstName & ' ' & $User.LastName } {!showNowTime} <br/>
++                        SNAP Bi 
++                    </td>
++                </tr>
++            </tfoot>
++        </table>
++        
++    </body>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/SnapbiInvoiceExcel.page-meta.xml b/pages/SnapbiInvoiceExcel.page-meta.xml
+new file mode 100644
+index 0000000..2d3cc76
+--- /dev/null
++++ b/pages/SnapbiInvoiceExcel.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8
+"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>35.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>SnapbiInvoiceExcel</label>
++</ApexPage>
+diff --git a/pages/SnapbiInvoicePdf.page b/pages/SnapbiInvoicePdf.page
+new file mode 100644
+index 0000000..db84c39
+--- /dev/null
++++ b/pages/SnapbiInvoicePdf.page
+@@ -0,0 +1,111 @@
++<apex:page standardController="Invoice__c" extensions="InvoiceController" standardStylesheets="false" showHeader="false" id="page" renderAs="PDF">
++    <head>
++        <style>
++            @page {
++              @bottom-right {
++                content: "Your footer Message";
++              }
++            }
++        </style>
++    </head>
++    <body>
++        <table class="invoice-header" width="100%" style="padding-left:3px">
++            <tr>
++                <td valign="top">
++                    <img src="{!URLFOR($Resource.pdfresource, 'Snap-logo.png')}"/>
++                </td>
++                <td valign="top" align="right">
++                    <span>
++                        <strong style="letter-spacing: 2px;font-size: 30px;font-weight: bold;color: black;">
++                            INVOICE
++                        </strong>
++                    </span>
++                </td>
++            </tr>
++            <tr>
++                <td>{!$Organization.Street}</td>
++                <td valign="top" align="right"><strong style="color: #015596;">DATE </strong><apex:outputText >{!invoiceDate}</apex:outputText></td>
++            </tr>
++            <tr>
++                <td>{!$Organization.City},&nbsp;{!SUBSTITUTE($Organization.State, 'California', 'CA')}&nbsp;{!$Organization.PostalCode}</td>
++                <td valign="top" align="right"><strong style="color: #015596;">INVOICE # </strong><apex:outputText >{!substitute(invoice.Name, 'INV-', '')}</apex:outputText></td>
++            </tr>
++            <tr>
++                <td>Phone:&nbsp;<apex:outputText >408-761-5204</apex:outputText></td>
++                <td valign="top" align="right"><strong style="color: #015596;">PAYMENT DUE </strong><apex:outputText >{!dueDate}</apex:outputText></td>
++            </tr>
++            <tr>
++                <td>Email:&nbsp;<apex:outputText >accountsreceivable@snapbi.com</apex:outputText></td>
++                <td valign="top" align="right">
++                    <apex:outputPanel rendered="{!AND(NOT(ISNULL(invoice.Period_Start__c)), NOT(ISNULL(invoice.Period_End__c)))}">
++                        <strong style="color: #015596;">SERVICE PERIOD </strong>
++                        <apex:outputText value="{0, date, MM/dd/yyyy}"><apex:param value="{!invoice.Period_Start__c}" /></apex:outputText>&nbsp;-&nbsp;<apex:outputText value="{0, date, MM/dd/yyyy}"><apex:param value="{!invoice.Period_End__c}" /></apex:outputText>
++                    </apex:outputPanel>
++               </td>
++            </tr>
++            <!--<tr style="height: 80px; padding-top: 10px;">
++                <td>Mail Payments To:&nbsp;<br/>PO BOX 77112<br/> San Francisco, CA 94107</td>
++                <td></td>
++            </tr>-->
++        </table>
++        <div style='background-color: #a9a7a7; padding: 5px 6px; margin-top: 10px; font-size: 20px;color: #FFF; font-weight:777;'>
++            <b>Bill To</b>
++        </div>
++        <table width="100%" style="padding-left:3px">
++            <tr>
++                <td>
++                    <apex:outputText >{!invoice.Account__r.Name}</apex:outputText><br />
++                    <apex:outputText >{!invoice.Contact__r.Name}</apex:outputText><br />
++                    <apex:outputText >{!invoice.Contact__r.Email}</apex:outputText><br />
++                    <apex:outputText rendered="{!NOT(ISBLANK(invoice.Account__r.BillingStreet))}">{!invoice.Account__r.BillingStreet}<br/></apex:outputText>
++                    <apex:outputText rendered="{!NOT(ISBLANK(invoice.Account__r.BillingCity))}">{!invoice.Account__r.BillingCity},&nbsp;{!SUBSTITUTE(invoice.Account__r.BillingState, 'California', '
+CA')}&nbsp;{!invoice.Account__r.BillingPostalCode}</apex:outputText>
++                </td>
++                <td valign="top" align="right">
++                    <apex:outputText rendered="{!NOT(ISNULL(invoice.PO__r.PO__c))}">
++                        <strong style="color: #015596;">P.O. #&nbsp;</strong>{!invoice.PO__r.PO__c}
++                    </apex:outputText>
++                </td>
++            </tr>
++        </table>
++        <div style='background-color: #a9a7a7; padding: 5px 6px; margin-top: 30px; font-size: 18px;color: #FFF; font-weight:777;'>
++            <div style="display: inline-block;text-align:left;width: 50%;"><b>Description</b></div>
++            <div style="display: inline-block;text-align:right;width: 10%;"><b>QTY</b></div>
++            <div style="display: inline-block;text-align:right;width: 20%;"><b>Rate Per</b></div>
++            <div style="float: right; margin-top: 13px;"><b>Total</b></div>
++        </div>
++        <apex:repeat value="{!charges}" var="line">
++            <div style="border-bottom: 1px solid #DDD; padding: 10px 0 10px 3px;">
++                <div style="display: inline-block;text-align:left;width: 50%;">
++                    <apex:outputText value="{!line.record.Description__c}" />
++                </div>
++                <div style="display: inline-block;text-align:right;width: 10%;">
++                    <apex:outputText value="{!line.record.Qty__c}"/>
++                </div>
++                <div style="display: inline-block;text-align:right;width: 20%;">
++                    <apex:outputField value="{!line.record.RatePer__c}" />
++                </div>
++                <div style="display: inline-block;text-align:right;width: 18%;">
++                    <apex:outputField value="{!line.record.LineTotal__c}" />
++                </div>
++            </div>
++        </apex:repeat>
++        <div style="margin: 20px 0;">
++            <apex:outputPanel layout="block" style="width:100%;text-align: right;" rendered="{!invoice.AmountPaid__c > 0}">
++                <apex:outputText >PAYMENTS / CREDITS:&nbsp;</apex:outputText>
++                 <apex:outputField value="{!invoice.AmountPaid__c}"></apex:outputField> 
++            </apex:outputPanel>
++            <div style="width:100%;text-align: right;font-size:15px;">
++                <strong>
++                    <apex:outputText >TOTAL AMOUNT:&nbsp;</apex:outputText>
++                    <apex:outputField value="{!invoice.AmountDue__c}"></apex:outputField> 
++                </strong>
++            </div>
++        </div>
++        <div style="clear:both;"></div><br/>
++        <div>
++            <apex:outputText rendered="{!NOT(ISBLANK(invoice.Comments__c))}">Comments:<br/><br />{!invoice.Comments__c}</apex:outputText>
++        </div>
++        <div style="clear:both; margin-top: 150px;"></div>
++        <div>SNAP offers a 100% satisfaction guarantee, contact us within seven (7) days if you are not fully satisfied with any work on this invoice.</div>
++    </body>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/SnapbiInvoicePdf.page-meta.xml b/pages/SnapbiInvoicePdf.page-meta.xml
+new file mode 100644
+index 0000000..b38fd55
+--- /dev/null
++++ b/pages/SnapbiInvoicePdf.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>Invoice Pdf</label>
++</ApexPage>
+diff --git a/pages/StdExceptionTemplate.page b/pages/StdExceptionTemplate.page
+new file mode 100644
+index 0000000..965917d
+--- /dev/null
++++ b/pages/StdExceptionTemplate.page
+@@ -0,0 +1,23 @@
++<apex:page showHeader="false" title="{!$Label.site.site_under_construction}" id="StdExceptionTemplate" cache="false">
++  <apex:stylesheet value="{!URLFOR($Resource.SiteSamples, 'SiteStyles.css')}"/>
++  <center>
++  <apex:panelGrid bgcolor="white" columns="1">
++    <br/>
++    <br/>
++    <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" co
+lumns="1" styleClass="topPanelContainer">
++      <br/>
++      <apex:outputPanel layout="block" styleClass="topPanel">
++        <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="3">
++          <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
++          <apex:insert name="icon"/>
++          <apex:insert name="error"/>
++        </apex:panelGrid>
++      </apex:outputPanel>
++      <c:SitePoweredBy />
++    </apex:panelGrid>
++    <br/>
++    <site:previewAsAdmin />
++    <br/>
++  </apex:panelGrid>
++  </center>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/StdExceptionTemplate.page-meta.xml b/pages/StdExceptionTemplate.page-meta.xml
+new file mode 100644
+index 0000000..4898c1b
+--- /dev/null
++++ b/pages/StdExceptionTemplate.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Lightning Platform template for standard exception pages</description>
++    <label>StdExceptionTemplate</label>
++</ApexPage>
+diff --git a/pages/Test.page b/pages/Test.page
+new file mode 100644
+index 0000000..6205371
+--- /dev/null
++++ b/pages/Test.page
+@@ -0,0 +1,5 @@
++<apex:page showHeader="false">
++  <script>
++      window.opener.postMessage("succeess", "*");
++  </script>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/Test.page-meta.xml b/pages/Test.page-meta.xml
+new file mode 100644
+index 0000000..4d29359
+--- /dev/null
++++ b/pages/Test.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>51.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>Test</label>
++</ApexPage>
+diff --git a/pages/TestRequest.page b/pages/TestRequest.page
+new file mode 100644
+index 0000000..da40d8c
+--- /dev/null
++++ b/pages/TestRequest.page
+@@ -0,0 +1,6 @@
++<apex:page showheader="false" cache="false" controller="TestRequestController">
++  <!-- Begin Default Content REMOVE THIS -->
++  <h1>Congratulations</h1>
++  This is your new Page
++  <!-- End Default Content REMOVE THIS -->
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/TestRequest.page-meta.xml b/pages/TestRequest.page-meta.xml
+new file mode 100644
+index 0000000..a86cde3
+--- /dev/null
++++ b/pages/TestRequest.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>50.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>TestRequest</label>
++</ApexPage>
+diff --git a/pages/Unauthorized.page b/pages/Unauthorized.page
+new file mode 100644
+index 0000000..b0e4ff2
+--- /dev/null
++++ b/pages/Unauthorized.page
+@@ -0,0 +1,38 @@
++<apex:page showHeader="false" title="{!$Label.site.authorization_required}" id="Unauthorized" cache="false">
++  <apex:composition template="{!$Site.Template}">
++    <apex:define name="body">
++      <center>
++        <apex:panelGrid bgcolor="white" columns="1">
++          <br/>
++          <br/>
++          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer">
++            <br/>
++            <apex:outputPanel layout="block" styleClass="topPanel">
++              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="3">
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
++                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/unauthorized.png')}"/>
++                <apex:panelGroup >
++                  <apex:outputText styleClass="title" value="{!$Label.site.authorization_required}"/>
++                  <br/>
++                  <br/>
++                  <apex:outputText value="{!$Label
+.site.login_or_register_first}"/>
++                  <br/>
++                  <apex:outputText value="{!$Label.site.click_forget_password}"/>
++                  <br/>
++                  <br/>
++                </apex:panelGroup>
++                <apex:outputText value=""/>
++                <apex:outputText value=""/>
++                <c:SiteLogin rendered="{!$Site.LoginEnabled && ISPICKVAL($User.UserType,'Guest')}" id="siteLogin"/>
++                <br/>
++              </apex:panelGrid>
++            </apex:outputPanel>
++            <c:SitePoweredBy />
++          </apex:panelGrid>
++        </apex:panelGrid>
++      </center>
++      <br/>
++    </apex:define>
++  </apex:composition>
++  <site:previewAsAdmin />
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/Unauthorized.page-meta.xml b/pages/Unauthorized.page-meta.xml
+new file mode 100644
+index 0000000..b096f0c
+--- /dev/null
++++ b/pages/Unauthorized.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Lightning Platform Authorization Required page</description>
++    <label>Unauthorized</label>
++</ApexPage>
+diff --git a/pages/UnderConstruction.page b/pages/UnderConstruction.page
+new file mode 100644
+index 0000000..3367f41
+--- /dev/null
++++ b/pages/UnderConstruction.page
+@@ -0,0 +1,19 @@
++<apex:page showHeader="false" title="{!$Label.site.site_under_construction}">
++  <apex:composition template="StdExceptionTemplate">
++    <apex:define name="icon">
++      <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/tools.png')}"/>
++    </apex:define>
++    <apex:define name="error">
++      <apex:outputText escape="false" styleClass="title" value="{!$Label.site.under_construction}">
++        <apex:param value="{!$Site.BaseUrl}"/>
++      </apex:outputText>
++      <br/>
++      <br/>
++      <apex:outputText value="{!$Label.site.stay_tuned}"/>
++      <apex:outputText escape="false" value=" {!$Label.site.get_in_touch}">
++      <apex:param value="mailto:{!HTMLENCODE($Site.AdminEmailAddress)}"/>
++      <apex:param value="{!$Label.site.email_us}"/>
++    </apex:outputText>
++   </apex:define>
++  </apex:composition>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/UnderConstruction.page-meta.xml b/pages/UnderConstruction.page-meta.xml
+new file mode 100644
+index 0000000..3513b1b
+--- /dev/null
++++ b/pages/UnderConstruction.page-meta.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <description>Default Lightning Platform Under Construction page</description>
++    <label>UnderConstruction</label>
++</ApexPage>
+diff --git a/pages/congaSign_PDF_CreateLink.page b/pages/congaSign_PDF_CreateLink.page
+new file mode 100644
+index 0000000..0a6ecc9
+--- /dev/null
++++ b/pages/congaSign_PDF_CreateLink.page
+@@ -0,0 +1,2 @@
++<apex:page applyBodyTag="false" standardController="Opportunity" extensions="CongaSign_PDF_CreateLinkController" action="{!createPDF}">
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/congaSign_PDF_CreateLink.page-meta.xml b/pages/congaSign_PDF_CreateLink.page-meta.xml
+new file mode 100644
+index 0000000..abe75c8
+--- /dev/null
++++ b/pages/congaSign_PDF_CreateLink.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>congaSign_PDF_CreateLink</label>
++</ApexPage>
+diff --git a/pages/congaSign_PDF_Page.page b/pages/congaSign_PDF_Page.page
+new file mode 100644
+index 0000000..bc492d8
+--- /dev/null
++++ b/pages/congaSign_PDF_Page.page
+@@ -0,0 +1,104 @@
++<apex:page applyBodyTag="false" standardController="Opportunity" extensions="CongaSign_PDF_PageController">
++    <head>
++        <style type="text/css" media="print">
++            @page {
++                margin-top: 155px;
++                margin-left: 90px;
++                margin-right: 90px;
++                @top-center {
++                content: element(header);
++                }
++                @bottom-left {
++                content: element(footer);
++                }
++                }
++                div.header {
++                padding: 40px;
++                position: running(header);
++                }
++                div.footer {
++                display: block;
++                padding: 5px;
++                text-align: right;
++                position: running(footer);
++                }
++                .pagenumber:before {
++                content: counter(page);
++                }
++                .pagecount:before {
++                content: counter(pages);
++                }
++                .icon {
++                width: 150px;
++                }
++                .container {
++                }
++                .container .theader {
++                text-align: center;
++                font-weight: 700;
++                }
++                .label {
++                width:45px;
++                display:inline-block;
++            }
++        </style>
++    </head>
++    <div class="header">
++        <div style="text-align:center;padding-bottom: 80px;">
++            <img class="icon" src="{!URLFOR($Resource.icon,'logo.png')}" />
++        </div>
++    </div>
++    <div class="footer">
++        <div><span class="pagenumber"/> / <span class="pagecount"/></div>
++    </div>
++    <div class="">
++        <div class="container">
++            <div class="theader">
++                <p>EXHIBIT A {!Opportunity.Name}</p>
++                <p>
++                    <div style="margin-top:10px;">Statement of Work to</div>
++                    <div>Consulting Services Agreement</div>
++                </p>
++            </div>
++            <div calss="contact">
++                <p>1. Contact.  Consultant’s principal Company contact:</p>
++                <p>
++                    <div style="width:300px;display:inline-block;margin-top:10px;">Name: {!myContact.Name}</div>
++                    <div style="display:inline-block;">Title: {!myContact.Title}</div>
++                </p>
++                <p>2. Services. The Services shall include, but shall not be limited to, the following:</p>
++                <apex:repeat value="{!OppLineItems}" var="item">
++                    <p>
++                        {!item.Description}
++                    </p>
++                </apex:repeat>
++                <p>3. Compensation</p>
++                <p>A. The Company will pay Consultant as follows:</p>
++                <p>Blended hourly rate for Advisory, Architecture, System Administration and Development $170</p>
++                <p>B. The Company will reimburse Consultant for all reasonable expenses incurred by Consultant in perform¬ing the Services pursuant to this Agreement, provided Consultant receives written consent to such expenses from an authorized agent of the Company prior to incurring such expenses and submits receipts for such expenses to the Company in accordance with Company policy.</p>
++                <p>4. Acceptance Criteria</p>
++                <p>An invoice together with a detailed hourly report containing dates and times of performed services, names of service providers and brief description of the provided service shall be delivered weekly, with respect to the services performed in the preceding week. Company will have 14 days to review invoices and notify Consultant of any invoice dispute. Undisputed invoices will be considered accepted.</p>
++                <p>5. Payment Terms</p>
++                <p>Undisputed invoices are Due 30 days from receipt</p>
++                <p>Accepted and agreed as of&nbsp; \date1\</p>
++                <p>
++                    <div style="width:250px;display:inline-block;margin-top:40px;font-weigh
+t:700;">CONSULTANT</div>
++                    <div style="display:inline-block;font-weight:700;">COMPANY</div>
++                </p>
++                <p>
++                    <div style="height:50px;width:250px;display:inline-block;margin-top:20px;">By:</div>
++                    <div style="display:inline-block;">
++                        <div class="label">By:</div> \customtext1  {“label”:”Company”}\</div>
++                </p>
++                <p>
++                    <div style="width:250px;display:inline-block;margin-top:20px;">Name: {!currentUser.Name}</div>
++                    <div style="display:inline-block;"><div class="label">Name:</div> \signature1\</div>
++                </p>
++                <p>
++                    <div style="width:250px;display:inline-block;margin-top:20px;">Title: {!currentUser.Title}</div>
++                    <div style="display:inline-block;"><div class="label">Title:</div> \customtext1 {“label”:”Title”}\</div>
++                </p>
++            </div>
++        </div>
++    </div>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/congaSign_PDF_Page.page-meta.xml b/pages/congaSign_PDF_Page.page-meta.xml
+new file mode 100644
+index 0000000..fb8fa64
+--- /dev/null
++++ b/pages/congaSign_PDF_Page.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>45.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>congaSign_PDF_Page</label>
++</ApexPage>
+diff --git a/pages/oath2Redirect.page b/pages/oath2Redirect.page
+new file mode 100644
+index 0000000..5e954b8
+--- /dev/null
++++ b/pages/oath2Redirect.page
+@@ -0,0 +1,3 @@
++<apex:page >
++    lalala
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/oath2Redirect.page-meta.xml b/pages/oath2Redirect.page-meta.xml
+new file mode 100644
+index 0000000..6f2f827
+--- /dev/null
++++ b/pages/oath2Redirect.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>51.0</apiVersion>
++    <availableInTouch>false</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>oath2Redirect</label>
++</ApexPage>
+diff --git a/pages/oauth_callback.page b/pages/oauth_callback.page
+new file mode 100644
+index 0000000..a4c9cc4
+--- /dev/null
++++ b/pages/oauth_callback.page
+@@ -0,0 +1,68 @@
++<apex:page controller="oauth_callback_controller" applyBodyTag="false" sidebar="false" showHeader="false" standardStylesheets="false">
++<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
++    <apex:slds />
++    <script>    
++        if('{!isSuccess}' == 'true'){
++            window.opener.postMessage('{!token}', '*')
++        }
++    </script>
++    <style>
++        body{
++            margin-top:20%;
++            background-color: #f9f9f9;
++            text-align:center;
++        }
++       
++        body button {
++            margin-top:20px;
++            padding:5px 0px;
++            width:100px;
++            font-size:1.1rem;
++            cursor:pointer;
++        }
++        svg {
++            width:5em;
++            height:5em;
++        }
++    </style>
++    <body>    
++        <apex:outputPanel rendered="{!isSuccess}">
++            <div>
++                <span class="slds-icon_container"> 
++                    <svg aria-hidden="true" class="slds-icon">
++                        <use style="fill:#4bca81" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#success')}"></use>
++                    </svg>
++                </span>
++            </div>
++            <div>
++                <h2 style="color:#4bca81">Your org has been authorized successfully!</h2>
++            </div>
++        </apex:outputPanel>
++            
++        <apex:outputPanel rendered="{!!isSuccess}">
++            <div>
++                <span class="slds-icon_container"> 
++                    <svg aria-hidden="true" class="slds-icon">
+
++                        <use style="fill:#d4504c" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#error')}"></use>
++                    </svg>
++                </span>
++            </div>
++            <div>
++                <h2 style="color:#d4504c">Invalid OAuth Request! Please try again.</h2>
++            </div>
++        </apex:outputPanel>
++        
++        <div><button onclick="window.close();" class="btn">Close</button></div>
++        
++        <div style="color:gray;margin-top:20px;" id="counter"></div>
++    </body>
++        <script>
++            let counter = 10
++            setInterval(()=>{
++                document.getElementById('counter').innerText = `The window will be auto-closed in ${counter} s.`
++                if(counter < 0) window.close()
++                counter--
++            }, 1000)
++        </script>
++    </html>
++</apex:page>
+\ No newline at end of file
+diff --git a/pages/oauth_callback.page-meta.xml b/pages/oauth_callback.page-meta.xml
+new file mode 100644
+index 0000000..34d4f2d
+--- /dev/null
++++ b/pages/oauth_callback.page-meta.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
++    <apiVersion>50.0</apiVersion>
++    <availableInTouch>true</availableInTouch>
++    <confirmationTokenRequired>false</confirmationTokenRequired>
++    <label>oauth_callback</label>
++</ApexPage>
